@@ -23,11 +23,15 @@ var _dayjs = _interopRequireDefault(require("dayjs"));
 
 var _Alert = _interopRequireDefault(require("../../db/models/Alert"));
 
+var _subscriptions = _interopRequireDefault(require("../../graphql/alerts/subscriptions"));
+
 var _logger = _interopRequireDefault(require("../../infrastructure/logger"));
 
 var _binance = _interopRequireDefault(require("../binance"));
 
 var _notifier = _interopRequireDefault(require("../notifier"));
+
+var _websocket = _interopRequireDefault(require("../websocket"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -142,7 +146,7 @@ var AlertsService = /*#__PURE__*/function () {
     key: "execute",
     value: function () {
       var _execute = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(alert, enrichedObservation) {
-        var now, observer, symbol, observation, body, isTest, orderOptions, placedOrder, _body, _body2;
+        var now, newAlert, observer, symbol, observation, body, isTest, orderOptions, placedOrder, _body, _body2;
 
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
@@ -156,10 +160,16 @@ var AlertsService = /*#__PURE__*/function () {
                 });
 
               case 3:
+                newAlert = _context5.sent;
+
+                _websocket["default"].publish(_subscriptions["default"].ALERT_CHANGED, {
+                  alertChanged: newAlert.toJSON()
+                });
+
                 observer = enrichedObservation.observer, symbol = enrichedObservation.symbol, observation = enrichedObservation.observation;
 
                 if (!(alert.type === 'alert')) {
-                  _context5.next = 11;
+                  _context5.next = 13;
                   break;
                 }
 
@@ -174,39 +184,39 @@ var AlertsService = /*#__PURE__*/function () {
 
                 _notifier["default"].notify();
 
-                _context5.next = 36;
+                _context5.next = 38;
                 break;
 
-              case 11:
+              case 13:
                 if (!(alert.type === 'order')) {
-                  _context5.next = 36;
+                  _context5.next = 38;
                   break;
                 }
 
-                _context5.prev = 12;
+                _context5.prev = 14;
                 isTest = _config["default"].get('binance.test');
                 orderOptions = alert.orderOptions;
-                _context5.next = 17;
+                _context5.next = 19;
                 return _binance["default"].placeMarketOrder(orderOptions, isTest);
 
-              case 17:
+              case 19:
                 placedOrder = _context5.sent;
 
                 _logger["default"].log('info', "order placed", placedOrder);
 
                 if (!placedOrder) {
-                  _context5.next = 26;
+                  _context5.next = 28;
                   break;
                 }
 
-                _context5.next = 22;
+                _context5.next = 24;
                 return _Alert["default"].query().patchAndFetchById(alert.id, {
                   info: isTest ? _objectSpread(_objectSpread({}, orderOptions), {}, {
                     orderId: 'test-order'
                   }) : placedOrder
                 });
 
-              case 22:
+              case 24:
                 _notifier["default"].setSubject("[".concat(isTest ? 'TEST:' : '', "ORDER][").concat(orderOptions.side, "] You placed an order"));
 
                 _body = _notifier["default"].getHTMLTemplate('simple', {
@@ -217,14 +227,14 @@ var AlertsService = /*#__PURE__*/function () {
 
                 _notifier["default"].notify();
 
-              case 26:
-                _context5.next = 36;
+              case 28:
+                _context5.next = 38;
                 break;
 
-              case 28:
-                _context5.prev = 28;
-                _context5.t0 = _context5["catch"](12);
-                _context5.next = 32;
+              case 30:
+                _context5.prev = 30;
+                _context5.t0 = _context5["catch"](14);
+                _context5.next = 34;
                 return _Alert["default"].query().patchAndFetchById(alert.id, {
                   status: 'failed',
                   info: {
@@ -232,7 +242,7 @@ var AlertsService = /*#__PURE__*/function () {
                   }
                 });
 
-              case 32:
+              case 34:
                 _notifier["default"].setSubject("[ORDER][FAILED] An order failed");
 
                 _body2 = _notifier["default"].getHTMLTemplate('simple', {
@@ -243,12 +253,12 @@ var AlertsService = /*#__PURE__*/function () {
 
                 _notifier["default"].notify();
 
-              case 36:
+              case 38:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[12, 28]]);
+        }, _callee5, null, [[14, 30]]);
       }));
 
       function execute(_x6, _x7) {

@@ -9,12 +9,12 @@ Features:
 - Observe real time symbols price with a 1s threshold
 - Get notified when they reach a certain limit
 - Place market and limit orders regardless binance locked balances limitations
+- Real time updates
+- Authentication with JWT for deployment on VPS
 
 Incoming features:
 
-- Real time updates with websockets in the UI
 - Redesign Alerts creation form
-- Authentication with JWT for deployment on VPS
 - Add Let's Encrypt HTTPS encryption for deployment on VPS
 - Handle config in database for dynamic testing.
 - Add virtual balances for testing strategies and analyse performances
@@ -27,6 +27,7 @@ You can easily run the project locally by following these steps:
 1. Fill in the configuration file `api/config/production.json`
 
    - **db**: Change password or leave it like this.
+   - **security**: Static credentials to authenticate the application and some JWT parameters.
    - **binance**: Fill with you `apiKey` and your `secretKey` that you'll find here: https://www.binance.com/en/my/settings/api-management
      `test` let you enable or not the test mode for order. (Note that this is not a dynamic value, it's computed on `make build`)
    - **notifier**: Fill in with the configurations relating to your mailbox according to the nodemailer service configurations (support gmail and hotmail). For gmail, you'll need to follow this step: https://myaccount.google.com/lesssecureapps

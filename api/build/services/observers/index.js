@@ -188,7 +188,7 @@ var ObserversService = /*#__PURE__*/function () {
               case 0:
                 return _context7.abrupt("return", _Observer["default"].relatedQuery('alerts')["for"](id).where({
                   status: 'pending'
-                }).orderBy('id'));
+                }).orderBy('id', 'DESC'));
 
               case 1:
               case "end":
@@ -215,7 +215,7 @@ var ObserversService = /*#__PURE__*/function () {
                 return _context8.abrupt("return", _Observer["default"].relatedQuery('alerts')["for"](id).where({
                   type: 'alert',
                   status: 'pending'
-                }).orderBy('id'));
+                }).orderBy('id', 'DESC'));
 
               case 1:
               case "end":
@@ -241,7 +241,7 @@ var ObserversService = /*#__PURE__*/function () {
               case 0:
                 return _context9.abrupt("return", _Observer["default"].relatedQuery('alerts')["for"](id).where({
                   type: 'alert'
-                }).whereIn('status', ['executed', 'failed']).orderBy('id'));
+                }).whereIn('status', ['executed', 'failed']).orderBy('id', 'DESC'));
 
               case 1:
               case "end":
@@ -268,7 +268,7 @@ var ObserversService = /*#__PURE__*/function () {
                 return _context10.abrupt("return", _Observer["default"].relatedQuery('alerts')["for"](id).where({
                   type: 'order',
                   status: 'pending'
-                }).orderBy('id'));
+                }).orderBy('id', 'DESC'));
 
               case 1:
               case "end":

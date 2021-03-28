@@ -89,22 +89,24 @@ var BinanceService = /*#__PURE__*/function () {
     key: "placeMarketOrder",
     value: function () {
       var _placeMarketOrder = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(_ref, isTest) {
-        var symbol, side, quantity, price, type, operation;
+        var symbol, side, quantity, price, type, operation, params;
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 symbol = _ref.symbol, side = _ref.side, quantity = _ref.quantity, price = _ref.price, type = _ref.type;
                 operation = isTest ? client.orderTest : client.order;
-                return _context3.abrupt("return", operation({
+                params = {
                   symbol: symbol,
                   side: side,
                   quantity: quantity,
                   type: type,
                   price: price
-                }));
+                };
+                if (type === 'limit') params.timeInForce = 'GTC';
+                return _context3.abrupt("return", operation(params));
 
-              case 3:
+              case 5:
               case "end":
                 return _context3.stop();
             }

@@ -19,9 +19,18 @@ var _config = _interopRequireDefault(require("config"));
 
 var _graphql = require("../../graphql");
 
+var _authenticationUtils = require("../../shared/authenticationUtils");
+
 var _logger = _interopRequireWildcard(require("../logger"));
 
 var _loggerPlugin = _interopRequireDefault(require("./logger-plugin"));
+
+var getUserFromHeader = function getUserFromHeader(req) {
+  var token = req.get('Authorization');
+  if (!token) return null;
+  token = token.replace('Bearer ', '');
+  return (0, _authenticationUtils.getUserFromToken)(token);
+};
 
 var server = new _apolloServer.ApolloServer({
   typeDefs: _graphql.typeDefs,
@@ -29,7 +38,7 @@ var server = new _apolloServer.ApolloServer({
   subscriptions: _graphql.subscriptions,
   context: function () {
     var _context = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_ref) {
-      var req, connection, contextLogger;
+      var req, connection, me, contextLogger;
       return _regenerator["default"].wrap(function _callee$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -44,13 +53,19 @@ var server = new _apolloServer.ApolloServer({
               return _context2.abrupt("return", connection.context);
 
             case 3:
+              _context2.next = 5;
+              return getUserFromHeader(req);
+
+            case 5:
+              me = _context2.sent;
               contextLogger = (0, _logger.getContextLogger)();
               return _context2.abrupt("return", {
+                me: me,
                 req: req,
                 logger: contextLogger
               });
 
-            case 5:
+            case 8:
             case "end":
               return _context2.stop();
           }
