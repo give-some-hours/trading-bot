@@ -1,0 +1,9 @@
+type Query {
+  getProducts: [Product!]!
+}
+
+type Product {
+  symbol: String!
+  baseAsset: String!
+  quoteAsset: String
+}

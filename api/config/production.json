@@ -1,0 +1,27 @@
+{
+  "server": {
+    "port": 4000
+  },
+  "db": {
+    "client": "pg",
+    "connection": {
+      "host": "db",
+      "port": 5432,
+      "user": "postgres",
+      "password": "!ChangeMe!",
+      "database": "tradingbot"
+    }
+  },
+  "binance": {
+    "apiKey": "",
+    "secretKey": "",
+    "threshold": 2000,
+    "test": true
+  },
+  "notifier": { 
+    "nodemailer_service": "gmail",
+    "user": "example@gmail.com",
+    "pass": "password",
+    "address_to": ""
+  }
+}

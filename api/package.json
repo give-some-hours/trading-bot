@@ -1,0 +1,58 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "prod": "node build/index.js",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run",
+    "knex": "npm run migrate && npm run seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:Day-One-Engagement-Competences/api"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "@graphql-tools/load-files": "^6.2.4",
+    "@graphql-tools/merge": "^6.2.4",
+    "apollo-server": "^2.19.0",
+    "bcrypt": "^5.0.0",
+    "binance-api-node": "^0.10.34",
+    "config": "^3.3.2",
+    "dayjs": "^1.9.5",
+    "express": "^4.17.1",
+    "graphql": "^15.3.0",
+    "graphql-resolvers": "^0.4.2",
+    "graphql-subscriptions": "^1.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.6",
+    "lodash": "^4.17.20",
+    "nanoid": "^3.1.12",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.5.0",
+    "objection": "^2.2.3",
+    "pg": "^8.3.3",
+    "slugify": "^1.4.5",
+    "triple-beam": "^1.3.0",
+    "winston": "^3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix --max-warnings=0",
+    "*.{js,css,md,graphql}": "prettier --write"
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module"
+    }
+  }
+}

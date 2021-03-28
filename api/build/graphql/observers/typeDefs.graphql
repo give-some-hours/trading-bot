@@ -1,0 +1,36 @@
+type Query {
+  getObservers: [Observer!]!
+
+  getPendingAlerts(id: ID!): [Alert!]!
+  getExecutedAlerts(id: ID!): [Alert!]!
+
+  getPendingOrders(id: ID!): [Alert!]!
+  getExecutedOrders(id: ID!): [Alert!]!
+}
+
+type Mutation {
+  createObserver(input: CreateObserverInput!): Observer!
+  updateObserver(id: ID!, input: UpdateObserverInput!): Observer!
+  deleteObserver(id: ID!): ID!
+}
+
+type Observer {
+  id: ID!
+  name: String!
+  baseAsset: String!
+  quoteAsset: String!
+  countPendingAlerts: Int!
+  countPendingOrders: Int!
+}
+
+input CreateObserverInput {
+  name: String!
+  baseAsset: String!
+  quoteAsset: String!
+}
+
+input UpdateObserverInput {
+  name: String
+  baseAsset: String
+  quoteAsset: String
+}

@@ -1,0 +1,45 @@
+type Query {
+  getEvents(filters: EventFilters!): [Alert!]!
+}
+
+type Mutation {
+  createAlert(input: CreateAlertInput!): Alert!
+  deleteAlert(id: ID!): ID!
+}
+
+type Alert {
+  id: ID!
+  observerId: ID!
+  type: AlertType!
+  lim: String!
+  limitDirection: String!
+  status: AlertStatus!
+  executedAt: DateTime
+  orderOptions: JSONObject
+  info: JSONObject
+  observer: Observer!
+}
+
+input EventFilters {
+  pendingOnly: Boolean!
+  search: String
+}
+
+input CreateAlertInput {
+  observerId: ID!
+  type: AlertType!
+  lim: String!
+  limitDirection: String!
+  orderOptions: JSONObject
+}
+
+enum AlertType {
+  alert
+  order
+}
+
+enum AlertStatus {
+  pending
+  executed
+  failed
+}
