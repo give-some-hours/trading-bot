@@ -24,7 +24,7 @@ Incoming features:
 
 You can easily run the project locally by following these steps:
 
-1. Fill in the configuration file `api/config/production.json`
+1. Copy `api/config/example.production.json` in `api/config/production.json` and fill it as below:
 
    - **db**: Change password or leave it like this.
    - **security**: Static credentials to authenticate the application and some JWT parameters.
