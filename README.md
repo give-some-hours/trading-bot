@@ -2,13 +2,23 @@
 
 This is a dockerized trading bot made for binance.
 
-<p align="center"><img alt="give-some-hours ether address" src="homepage.png" style="box-shadow: 0 0 10px 0px" /></p>
+<p align="center"><img alt="give-some-hours ether address" src="homepage.png" style="box-shadow: 0 0 10px 0px;max-width:600px" /></p>
 
 Features:
 
 - Observe real time symbols price with a 1s threshold
 - Get notified when they reach a certain limit
-- Place market and limit orders
+- Place market and limit orders regardless binance locked balances limitations
+
+Incoming features:
+
+- Real time updates with websockets in the UI
+- Redesign Alerts creation form
+- Authentication with JWT for deployment on VPS
+- Add Let's Encrypt HTTPS encryption for deployment on VPS
+- Handle config in database for dynamic testing.
+- Add virtual balances for testing strategies and analyse performances
+- And so on ... Feedback are necessary so leave a star to this repository, create an issue and support it!
 
 ## Run locally
 
