@@ -12,6 +12,14 @@
       "database": "tradingbot"
     }
   },
+  "security": {
+    "email": "demo@demo.com",
+    "password": "demo",
+    "jwt": {
+      "expiresIn": "30d",
+      "secret": "changeMeInProduction"
+    }
+  },
   "binance": {
     "apiKey": "",
     "secretKey": "",
@@ -20,8 +28,8 @@
   },
   "notifier": { 
     "nodemailer_service": "gmail",
-    "user": "example@gmail.com",
-    "pass": "password",
-    "address_to": ""
+    "user": "give.some.hours@gmail.com",
+    "pass": "yourpassword",
+    "address_to": "give.some.hours@gmail.com"
   }
 }

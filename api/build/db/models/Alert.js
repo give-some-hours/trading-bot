@@ -73,7 +73,7 @@ var Alert = /*#__PURE__*/function (_Model) {
           }
 
           if (search) {
-            query.innerJoin('observers', 'alerts.observer_id', 'observers.id').whereRaw("CONCAT(observers.base_asset, observers.quote_asset) ilike '%".concat(search, "%'"));
+            query.innerJoin('observers', 'alerts.observer_id', 'observers.id').orWhereRaw("CONCAT(observers.base_asset, observers.quote_asset) ilike '%".concat(search, "%'")).orWhereRaw("CAST(alerts.id as VARCHAR) ilike '%".concat(search, "%'")).orWhereRaw("CAST(alerts.type as VARCHAR) ilike '%".concat(search, "%'"));
           }
         }
       };

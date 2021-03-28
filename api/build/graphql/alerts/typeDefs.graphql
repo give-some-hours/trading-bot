@@ -7,6 +7,10 @@ type Mutation {
   deleteAlert(id: ID!): ID!
 }
 
+type Subscription {
+  alertChanged: Alert!
+}
+
 type Alert {
   id: ID!
   observerId: ID!

@@ -11,14 +11,22 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _graphqlResolvers = require("graphql-resolvers");
+
 var _alerts = _interopRequireDefault(require("../../services/alerts"));
 
 var _observers = _interopRequireDefault(require("../../services/observers"));
 
+var _websocket = _interopRequireDefault(require("../../services/websocket"));
+
+var _isAuthenticated = _interopRequireDefault(require("../shared/resolvers/isAuthenticated"));
+
+var _subscriptions = _interopRequireDefault(require("./subscriptions"));
+
 var _default = {
   Query: {
-    getEvents: function () {
-      var _getEvents = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, _ref) {
+    getEvents: (0, _graphqlResolvers.combineResolvers)(_isAuthenticated["default"], /*#__PURE__*/function () {
+      var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, _ref) {
         var filters;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
@@ -35,23 +43,21 @@ var _default = {
         }, _callee);
       }));
 
-      function getEvents(_x, _x2) {
-        return _getEvents.apply(this, arguments);
-      }
-
-      return getEvents;
-    }()
+      return function (_x, _x2) {
+        return _ref2.apply(this, arguments);
+      };
+    }())
   },
   Mutation: {
-    deleteAlert: function () {
-      var _deleteAlert = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, _ref2) {
-        var id;
+    createAlert: (0, _graphqlResolvers.combineResolvers)(_isAuthenticated["default"], /*#__PURE__*/function () {
+      var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, _ref3) {
+        var input;
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                id = _ref2.id;
-                return _context2.abrupt("return", _alerts["default"].deleteById(id));
+                input = _ref3.input;
+                return _context2.abrupt("return", _alerts["default"].create(input));
 
               case 2:
               case "end":
@@ -61,21 +67,19 @@ var _default = {
         }, _callee2);
       }));
 
-      function deleteAlert(_x3, _x4) {
-        return _deleteAlert.apply(this, arguments);
-      }
-
-      return deleteAlert;
-    }(),
-    createAlert: function () {
-      var _createAlert = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(parent, _ref3) {
-        var input;
+      return function (_x3, _x4) {
+        return _ref4.apply(this, arguments);
+      };
+    }()),
+    deleteAlert: (0, _graphqlResolvers.combineResolvers)(_isAuthenticated["default"], /*#__PURE__*/function () {
+      var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(parent, _ref5) {
+        var id;
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                input = _ref3.input;
-                return _context3.abrupt("return", _alerts["default"].create(input));
+                id = _ref5.id;
+                return _context3.abrupt("return", _alerts["default"].deleteById(id));
 
               case 2:
               case "end":
@@ -85,12 +89,17 @@ var _default = {
         }, _callee3);
       }));
 
-      function createAlert(_x5, _x6) {
-        return _createAlert.apply(this, arguments);
+      return function (_x5, _x6) {
+        return _ref6.apply(this, arguments);
+      };
+    }())
+  },
+  Subscription: {
+    alertChanged: {
+      subscribe: function subscribe() {
+        return _websocket["default"].subscribe([_subscriptions["default"].ALERT_CHANGED]);
       }
-
-      return createAlert;
-    }()
+    }
   },
   Alert: {
     observer: function () {

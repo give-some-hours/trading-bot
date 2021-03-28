@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -20,6 +22,10 @@ var _config = _interopRequireDefault(require("config"));
 var _nodemailer = _interopRequireDefault(require("nodemailer"));
 
 var _logger = _interopRequireDefault(require("../../infrastructure/logger"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var createTransporter = function createTransporter() {
   return _nodemailer["default"].createTransport({
@@ -55,6 +61,10 @@ var NotifierService = /*#__PURE__*/function () {
   }, {
     key: "getHTMLTemplate",
     value: function getHTMLTemplate(templateName, map) {
+      var mapObject = _objectSpread(_objectSpread({}, map), {}, {
+        preheader: (map === null || map === void 0 ? void 0 : map.body) || ''
+      });
+
       var pathFile = _path["default"].join(__dirname, 'templates', "".concat(templateName, ".html"));
 
       var templateFile = _fs["default"].readFileSync(pathFile, {
@@ -62,11 +72,14 @@ var NotifierService = /*#__PURE__*/function () {
         flag: 'r'
       });
 
-      var replacer = function replacer(fm, g1) {
-        return (map === null || map === void 0 ? void 0 : map[g1]) || null;
-      };
+      var formatedFile = templateFile;
 
-      return templateFile.replace(/{{(.*)}}/, replacer);
+      for (var _i = 0, _Object$keys = Object.keys(mapObject); _i < _Object$keys.length; _i++) {
+        var key = _Object$keys[_i];
+        formatedFile = formatedFile.replace("{{".concat(key, "}}"), mapObject[key]);
+      }
+
+      return formatedFile;
     }
   }, {
     key: "send",
@@ -87,6 +100,7 @@ var NotifierService = /*#__PURE__*/function () {
         from: _config["default"].get('notifier.user'),
         to: _config["default"].get('notifier.address_to'),
         subject: NotifierService.subject,
+        text: NotifierService.html,
         html: NotifierService.html
       };
 
