@@ -2,7 +2,7 @@
 
 This is a dockerized trading bot made for binance.
 
-<p align="center"><img alt="give-some-hours ether address" src="homepage.png" style="box-shadow: 0 0 10px 0px;max-width:600px" /></p>
+<p align="center"><img alt="give-some-hours ether address" src="screenshot.png" style="box-shadow: 0 0 10px 0px;max-width:600px" /></p>
 
 Features:
 
@@ -187,7 +187,41 @@ You are now up to date.
 
 ## Debug
 
-// Todo
+When something wrong, you must identify if containers are running.
+
+1. Show running containers
+
+```bash
+  $ docker ps
+```
+
+<sub>Expected output</sub>
+
+```bash
+  CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                                      NAMES
+c57b64af7a66        trados-server:1.0    "/docker-entrypoint.…"   1 minutes ago      Up 1 minutes       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   server
+f596eebd955f        trados-api:1.0       "docker-entrypoint.s…"   1 minutes ago      Up 1 minutes       4000/tcp                                   api
+d825f4e96a4d        dpage/pgadmin4       "/entrypoint.sh"         1 minutes ago      Up 1 minutes       443/tcp, 0.0.0.0:32796->80/tcp             pgadmin
+5b21a525e9c6        postgres:12-alpine   "docker-entrypoint.s…"   1 minutes ago      Up 1 minutes       0.0.0.0:5432->5432/tcp                     db
+```
+
+2. Restart a container that failed by using its service name
+
+```bash
+$ docker-compose up -d <service-name>
+```
+
+Or restart and rebuild
+
+```bash
+$ docker-compose up -d --build <service-name>
+```
+
+3. Inspect service main process status by typing
+
+```bash
+$ docker-compose logs <service-name>
+```
 
 ## Support
 
