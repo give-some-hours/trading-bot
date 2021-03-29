@@ -10,12 +10,12 @@ Features:
 - Get notified when they reach a certain limit
 - Place market and limit orders regardless binance locked balances limitations
 - Real time updates
-- Authentication with JWT for deployment on VPS
+- Authentication with JWT for deployment on VPS. [Read the guide](#deploy-on-vps).
+- SSL support. [Read the guide](#ssl-support).
 
 Incoming features:
 
 - Redesign Alerts creation form
-- Add Let's Encrypt HTTPS encryption for deployment on VPS
 - Handle config in database for dynamic testing.
 - Add virtual balances for testing strategies and analyse performances
 - And so on ... Feedback are necessary so leave a star to this repository, create an issue and support it!
