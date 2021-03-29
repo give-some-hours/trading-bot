@@ -9,8 +9,8 @@ down:
 	docker-compose down
 db@create:
 	# Make the build, must be run once
-	docker-compose up -d db \
-		&& docker-compose run api sh ./create-database.sh
+	- docker-compose up -d db
+	- docker-compose run api sh ./create-database.sh
 db@backup:
 	# backup the data
 	cp -r ./db_datas ./db_datas.backup

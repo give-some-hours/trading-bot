@@ -28,13 +28,19 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var createTransporter = function createTransporter() {
-  return _nodemailer["default"].createTransport({
-    service: _config["default"].get('notifier.nodemailer_service'),
-    auth: {
-      user: _config["default"].get('notifier.user'),
-      pass: _config["default"].get('notifier.pass')
-    }
-  });
+  try {
+    return _nodemailer["default"].createTransport({
+      service: _config["default"].get('notifier.nodemailer_service'),
+      auth: {
+        user: _config["default"].get('notifier.user'),
+        pass: _config["default"].get('notifier.pass')
+      }
+    });
+  } catch (err) {
+    _logger["default"].log('error', err);
+
+    return null;
+  }
 };
 
 var NotifierService = /*#__PURE__*/function () {

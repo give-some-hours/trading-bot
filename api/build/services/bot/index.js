@@ -40,19 +40,26 @@ var BotService = /*#__PURE__*/function () {
     key: "run",
     value: //
     function () {
-      var _run = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-        var stopFlag, _loop;
-
-        return _regenerator["default"].wrap(function _callee$(_context2) {
+      var _run = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+        var stopFlag;
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _logger["default"].log('info', 'Starting bot...');
 
                 stopFlag = true;
-                _loop = /*#__PURE__*/_regenerator["default"].mark(function _loop() {
+
+              case 2:
+                if (!stopFlag) {
+                  _context2.next = 13;
+                  break;
+                }
+
+                _context2.prev = 3;
+                return _context2.delegateYield( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
                   var observers, observations, observersAlerts, enrichedObservations;
-                  return _regenerator["default"].wrap(function _loop$(_context) {
+                  return _regenerator["default"].wrap(function _callee$(_context) {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
@@ -74,13 +81,17 @@ var BotService = /*#__PURE__*/function () {
 
                         case 8:
                           observations = _context.sent;
-                          _context.next = 11;
+                          observations = observations.filter(function (obs) {
+                            return obs.observation > 0;
+                          }); // concurrencially
+
+                          _context.next = 12;
                           return Promise.all(observations.map(function (_ref) {
                             var observer = _ref.observer;
                             return _observers["default"].getPendingActions(observer.id);
                           }));
 
-                        case 11:
+                        case 12:
                           observersAlerts = _context.sent;
                           enrichedObservations = observations.map(function (_ref2, index) {
                             var observer = _ref2.observer,
@@ -93,35 +104,39 @@ var BotService = /*#__PURE__*/function () {
                               alerts: observersAlerts[index]
                             };
                           });
-                          _context.next = 15;
+                          _context.next = 16;
                           return BotService.doWhatToDo(enrichedObservations);
 
-                        case 15:
+                        case 16:
                         case "end":
                           return _context.stop();
                       }
                     }
-                  }, _loop);
-                });
-
-              case 3:
-                if (!stopFlag) {
-                  _context2.next = 7;
-                  break;
-                }
-
-                return _context2.delegateYield(_loop(), "t0", 5);
+                  }, _callee);
+                })(), "t0", 5);
 
               case 5:
-                _context2.next = 3;
+                _context2.next = 11;
                 break;
 
               case 7:
+                _context2.prev = 7;
+                _context2.t1 = _context2["catch"](3);
+
+                _logger["default"].info('info', 'Error occured. Skip iteration.');
+
+                _logger["default"].log('error', _context2.t1);
+
+              case 11:
+                _context2.next = 2;
+                break;
+
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee);
+        }, _callee2, null, [[3, 7]]);
       }));
 
       function run() {
@@ -133,17 +148,17 @@ var BotService = /*#__PURE__*/function () {
   }, {
     key: "doWhatToDo",
     value: function () {
-      var _doWhatToDo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(enrichedObservations) {
-        return _regenerator["default"].wrap(function _callee3$(_context4) {
+      var _doWhatToDo = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(enrichedObservations) {
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
                 return Promise.all(enrichedObservations.map( /*#__PURE__*/function () {
-                  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(enrichedObservation) {
+                  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(enrichedObservation) {
                     var alerts, observation, _iterator, _step, alert, UP;
 
-                    return _regenerator["default"].wrap(function _callee2$(_context3) {
+                    return _regenerator["default"].wrap(function _callee3$(_context3) {
                       while (1) {
                         switch (_context3.prev = _context3.next) {
                           case 0:
@@ -196,7 +211,7 @@ var BotService = /*#__PURE__*/function () {
                             return _context3.stop();
                         }
                       }
-                    }, _callee2, null, [[2, 14, 17, 20]]);
+                    }, _callee3, null, [[2, 14, 17, 20]]);
                   }));
 
                   return function (_x2) {
@@ -209,7 +224,7 @@ var BotService = /*#__PURE__*/function () {
                 return _context4.stop();
             }
           }
-        }, _callee3);
+        }, _callee4);
       }));
 
       function doWhatToDo(_x) {

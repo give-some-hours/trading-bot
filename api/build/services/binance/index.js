@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -18,6 +20,8 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 var _binanceApiNode = _interopRequireDefault(require("binance-api-node"));
 
 var _config = _interopRequireDefault(require("config"));
+
+var _logger = _interopRequireDefault(require("../../infrastructure/logger"));
 
 var client = (0, _binanceApiNode["default"])({
   apiKey: _config["default"].get('binance.apiKey'),
@@ -38,21 +42,30 @@ var BinanceService = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _context.prev = 0;
+                _context.next = 3;
                 return client.prices({
                   symbol: symbol
                 });
 
-              case 2:
+              case 3:
                 price = _context.sent;
                 return _context.abrupt("return", price);
 
-              case 4:
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+
+                _logger["default"].log('error', _context.t0);
+
+                return _context.abrupt("return", (0, _defineProperty2["default"])({}, symbol, -1));
+
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[0, 7]]);
       }));
 
       function observe(_x) {
@@ -88,13 +101,13 @@ var BinanceService = /*#__PURE__*/function () {
   }, {
     key: "placeMarketOrder",
     value: function () {
-      var _placeMarketOrder = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(_ref, isTest) {
+      var _placeMarketOrder = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(_ref2, isTest) {
         var symbol, side, quantity, price, type, operation, params;
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                symbol = _ref.symbol, side = _ref.side, quantity = _ref.quantity, price = _ref.price, type = _ref.type;
+                symbol = _ref2.symbol, side = _ref2.side, quantity = _ref2.quantity, price = _ref2.price, type = _ref2.type;
                 operation = isTest ? client.orderTest : client.order;
                 params = {
                   symbol: symbol,

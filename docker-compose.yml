@@ -10,6 +10,9 @@ services:
       - db
     depends_on:
       - db
+    networks:
+      - backend
+      - frontend
 
   server:
     image: trados-server:1.0
@@ -23,6 +26,16 @@ services:
       - api
     ports:
       - 80:80
+      # SSL ONLY
+      # - 443:443
+    environment: 
+      - NGINX_HOST=localhost
+    command: /bin/sh -c "envsubst '${NGINX_HOST}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
+    # SSL ONLY
+    # volumes: 
+    #   - letsencrypt:/etc/letsencrypt
+    networks:
+      - frontend
 
   db:
     image: trados-db:1.0
@@ -38,5 +51,34 @@ services:
     volumes:
       - ./db_datas:/var/lib/postgresql/data/
     restart: always
+    networks:
+      - backend
 
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: demo@demo.fr
+      PGADMIN_DEFAULT_PASSWORD: d3m0
+    volumes:
+      - pgadmin:/Users/trados/.pgadmin
+    ports:
+      - target: 80
+    networks:
+      - backend
+      - frontend
 
+volumes:
+  pgadmin: {}
+  # SSL ONLY
+  # letsencrypt: {}
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

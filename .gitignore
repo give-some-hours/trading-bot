@@ -1,2 +1,4 @@
 db_datas*
 api/config/production.json
+nginx.conf.template
+nginx.conf.ssl.template
